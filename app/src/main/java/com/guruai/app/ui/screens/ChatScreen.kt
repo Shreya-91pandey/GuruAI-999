@@ -13,7 +13,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier.modifier
+import androidx.compose.ui.Modifier.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -39,7 +39,6 @@ fun ChatScreen(
         }
     }
 
-    // Refresh status when returning from settings
     LaunchedEffect(Unit) {
         viewModel.refreshStatus()
     }
@@ -73,16 +72,26 @@ fun ChatScreen(
         },
         containerColor = BackgroundDark
     ) { padding ->
-        Column(Modifier.fillMaxSize().padding(padding)) {
-            Box(modifier.weight(1f).fillMaxWidth()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+        ) {
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+            ) {
                 if (uiState.messages.isEmpty()) {
                     Column(
-                        Modifier.fillMaxSize().padding(32.dp),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(32.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
                         Text("🙏", fontSize = 48.sp)
-                        Spacer(Modifier.height(12.dp))
+                        Spacer(modifier = Modifier.height(12.dp))
                         Text("Namaste! Main Guru AI hoon", color = Color.White, fontWeight = FontWeight.SemiBold)
                         Text("Settings mein key daalo aur baat shuru karo", color = Color.Gray)
                     }
@@ -102,9 +111,16 @@ fun ChatScreen(
                                     shape = RoundedCornerShape(16.dp),
                                     colors = CardDefaults.cardColors(containerColor = AiBubble)
                                 ) {
-                                    Row(Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
-                                        CircularProgressIndicator(Modifier.size(18.dp), color = Primary, strokeWidth = 2.dp)
-                                        Spacer(Modifier.width(10.dp))
+                                    Row(
+                                        modifier = Modifier.padding(14.dp),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        CircularProgressIndicator(
+                                            modifier = Modifier.size(18.dp),
+                                            color = Primary,
+                                            strokeWidth = 2.dp
+                                        )
+                                        Spacer(modifier = Modifier.width(10.dp))
                                         Text("Soch raha hoon…", color = Color.Gray, fontSize = 14.sp)
                                     }
                                 }
@@ -115,12 +131,23 @@ fun ChatScreen(
 
                 uiState.error?.let { error ->
                     Card(
-                        modifier = Modifier.align(Alignment.BottomCenter).padding(16.dp).fillMaxWidth(),
+                        modifier = Modifier
+                            .align(Alignment.BottomCenter)
+                            .padding(16.dp)
+                            .fillMaxWidth(),
                         colors = CardDefaults.cardColors(containerColor = Error.copy(alpha = 0.9f)),
                         shape = RoundedCornerShape(12.dp)
                     ) {
-                        Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
-                            Text(error, color = Color.White, modifier = Modifier.weight(1f), fontSize = 13.sp)
+                        Row(
+                            modifier = Modifier.padding(12.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                error,
+                                color = Color.White,
+                                modifier = Modifier.weight(1f),
+                                fontSize = 13.sp
+                            )
                             TextButton(onClick = { viewModel.clearError() }) {
                                 Text("OK", color = Color.White)
                             }
@@ -131,7 +158,9 @@ fun ChatScreen(
 
             Surface(color = SurfaceDark) {
                 Row(
-                    Modifier.fillMaxWidth().padding(12.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(12.dp),
                     verticalAlignment = Alignment.Bottom
                 ) {
                     OutlinedTextField(
@@ -151,7 +180,7 @@ fun ChatScreen(
                             unfocusedContainerColor = SurfaceVariant
                         )
                     )
-                    Spacer(Modifier.width(10.dp))
+                    Spacer(modifier = Modifier.width(10.dp))
                     FloatingActionButton(
                         onClick = {
                             if (inputText.isNotBlank() && !uiState.isLoading) {
@@ -176,12 +205,13 @@ fun ChatScreen(
 private fun MessageBubble(message: ChatMessage) {
     val isUser = message.isUser
     Row(
-        Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = if (isUser) Arrangement.End else Arrangement.Start
     ) {
         Card(
             shape = RoundedCornerShape(
-                topStart = 18.dp, topEnd = 18.dp,
+                topStart = 18.dp,
+                topEnd = 18.dp,
                 bottomStart = if (isUser) 18.dp else 4.dp,
                 bottomEnd = if (isUser) 4.dp else 18.dp
             ),
@@ -190,12 +220,22 @@ private fun MessageBubble(message: ChatMessage) {
             ),
             modifier = Modifier.widthIn(max = 320.dp)
         ) {
-            Column(Modifier.padding(14.dp)) {
+            Column(modifier = Modifier.padding(14.dp)) {
                 if (!isUser) {
-                    Text(message.model.ifBlank { "Guru" }, style = MaterialTheme.typography.labelSmall, color = Primary, fontWeight = FontWeight.Medium)
-                    Spacer(Modifier.height(4.dp))
+                    Text(
+                        message.model.ifBlank { "Guru" },
+                        style = MaterialTheme.typography.labelSmall,
+                        color = Primary,
+                        fontWeight = FontWeight.Medium
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
                 }
-                Text(message.content, color = Color.White, fontSize = 15.sp, lineHeight = 22.sp)
+                Text(
+                    message.content,
+                    color = Color.White,
+                    fontSize = 15.sp,
+                    lineHeight = 22.sp
+                )
             }
         }
     }
