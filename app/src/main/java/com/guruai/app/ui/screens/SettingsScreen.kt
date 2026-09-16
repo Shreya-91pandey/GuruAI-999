@@ -12,7 +12,7 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier.Modifier
+import androidx.compose.ui.Modifier.modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -66,10 +66,18 @@ fun SettingsScreen(
                 .padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Text("API Keys", style = MaterialTheme.typography.titleLarge, color = Color.White, fontWeight = FontWeight.Bold)
-            Text("Gemini aur Grok keys yahan daalo. Securely save hoti hain.", color = Color.Gray, fontSize = 14.sp)
+            Text(
+                "API Keys",
+                style = MaterialTheme.typography.titleLarge,
+                color = Color.White,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                "Gemini aur Grok keys yahan daalo. Securely save hoti hain.",
+                color = Color.Gray,
+                fontSize = 14.sp
+            )
 
-            // Gemini
             KeyCard(
                 title = "Gemini API Key",
                 value = uiState.geminiKey,
@@ -79,7 +87,6 @@ fun SettingsScreen(
                 placeholder = "AIzaSy..."
             )
 
-            // Grok
             KeyCard(
                 title = "Grok API Key",
                 value = uiState.grokKey,
@@ -89,7 +96,6 @@ fun SettingsScreen(
                 placeholder = "xai-..."
             )
 
-            // Preferred Provider
             Text("Preferred AI", color = Color.White, fontWeight = FontWeight.SemiBold)
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 FilterChip(
@@ -104,21 +110,39 @@ fun SettingsScreen(
                 )
             }
 
-            // Toggles
-            Card(colors = CardDefaults.cardColors(containerColor = SurfaceVariant), shape = RoundedCornerShape(14.dp)) {
-                Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+            Card(
+                colors = CardDefaults.cardColors(containerColor = SurfaceVariant),
+                shape = RoundedCornerShape(14.dp)
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         Text("AI Online Mode", color = Color.White)
-                        Switch(checked = uiState.onlineMode, onCheckedChange = viewModel::updateOnlineMode)
+                        Switch(
+                            checked = uiState.onlineMode,
+                            onCheckedChange = viewModel::updateOnlineMode
+                        )
                     }
-                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         Text("Voice Reply (TTS)", color = Color.White)
-                        Switch(checked = uiState.ttsEnabled, onCheckedChange = viewModel::updateTts)
+                        Switch(
+                            checked = uiState.ttsEnabled,
+                            onCheckedChange = viewModel::updateTts
+                        )
                     }
                 }
             }
 
-            // Theme
             Text("Theme", color = Color.White, fontWeight = FontWeight.SemiBold)
             uiState.themeNames.forEachIndexed { index, name ->
                 FilterChip(
@@ -129,7 +153,6 @@ fun SettingsScreen(
                 )
             }
 
-            // Optional Web Search
             Text("Optional: Web Search", color = Color.White, fontWeight = FontWeight.SemiBold)
             OutlinedTextField(
                 value = uiState.searchApiKey,
@@ -150,15 +173,24 @@ fun SettingsScreen(
 
             Button(
                 onClick = { viewModel.save() },
-                modifier = Modifier.fillMaxWidth().height(52.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(52.dp),
                 shape = RoundedCornerShape(14.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Primary)
             ) {
-                Text(if (uiState.isSaved) "✓ Saved" else "Save All Settings", fontWeight = FontWeight.SemiBold)
+                Text(
+                    if (uiState.isSaved) "✓ Saved" else "Save All Settings",
+                    fontWeight = FontWeight.SemiBold
+                )
             }
 
             if (uiState.isSaved) {
-                Text("Settings saved successfully!", color = Color(0xFF03DAC5), modifier = Modifier.align(Alignment.CenterHorizontally))
+                Text(
+                    "Settings saved successfully!",
+                    color = Color(0xFF03DAC5),
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
             }
         }
     }
@@ -178,9 +210,9 @@ private fun KeyCard(
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = SurfaceVariant)
     ) {
-        Column(Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(16.dp)) {
             Text(title, color = Primary, fontWeight = FontWeight.SemiBold)
-            Spacer(Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(8.dp))
             OutlinedTextField(
                 value = value,
                 onValueChange = onValueChange,
@@ -190,7 +222,11 @@ private fun KeyCard(
                 visualTransformation = if (show) VisualTransformation.None else PasswordVisualTransformation(),
                 trailingIcon = {
                     IconButton(onClick = onToggleShow) {
-                        Icon(if (show) Icons.Default.VisibilityOff else Icons.Default.Visibility, null, tint = Color.Gray)
+                        Icon(
+                            if (show) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+                            contentDescription = null,
+                            tint = Color.Gray
+                        )
                     }
                 },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
