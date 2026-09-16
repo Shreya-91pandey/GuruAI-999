@@ -50,7 +50,7 @@ fun GuruAIApp() {
             SettingsScreen(
                 onBack = { navController.popBackStack() },
                 onKeysSaved = {
-                    chatViewModel.refreshKeys()
+                    chatViewModel.refreshStatus()
                 }
             )
         }
