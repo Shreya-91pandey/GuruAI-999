@@ -238,6 +238,6 @@ private fun MessageBubble(message: ChatMessage) {
                 )
             }
         }
-    }
+    } 
 }
  
